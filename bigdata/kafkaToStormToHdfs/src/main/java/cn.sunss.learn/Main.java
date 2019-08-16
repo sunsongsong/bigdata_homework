@@ -36,7 +36,7 @@ public class Main {
         //控制kafka的offset的消费策略
 //        kafkaSpoutConfigBuilder.setFirstPollOffsetStrategy(KafkaSpoutConfig.FirstPollOffsetStrategy.UNCOMMITTED_LATEST);
         kafkaSpoutConfigBuilder.setFirstPollOffsetStrategy(KafkaSpoutConfig.FirstPollOffsetStrategy.EARLIEST);
-        kafkaSpoutConfigBuilder.setGroupId("kafkaToStorm");
+        kafkaSpoutConfigBuilder.setGroupId("kafkaToStorm2");
         kafkaSpoutConfigBuilder.setOffsetCommitPeriodMs(1000L);
         KafkaSpoutConfig<String, String> kafkaSpoutConfig = kafkaSpoutConfigBuilder.build();
         //kafkaSpout需要KafkaSpoutConfig
@@ -58,7 +58,6 @@ public class Main {
                 .withRotationPolicy(rotationPolicy)
                 .withSyncPolicy(syncPolicy);
 
-
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("kafkaSpout",kafkaSpout);
         builder.setBolt("wordCountBolt",wordCountBolt).localOrShuffleGrouping("kafkaSpout");
@@ -72,8 +71,6 @@ public class Main {
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology("kafkaToStormToHdfs",config,builder.createTopology());
         }
-
-
     }
 
 }
